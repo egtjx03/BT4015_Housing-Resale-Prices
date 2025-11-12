@@ -104,10 +104,9 @@ singapore_outline <- st_union(planning_areas)
 cat("1. Creating choropleth: Average resale price by town\n")
 p1 <- ggplot() +
   # All planning areas with data filled by price, missing areas in light gray
-  geom_sf(data = town_data, aes(fill = Mean_Price), color = "gray40", linewidth = 0.3) +
+  geom_sf(data = town_data, aes(fill = Mean_Price), color = "white", linewidth = 0.5) +
   scale_fill_gradientn(
-    colors = c("#FFFFCC", "#FFEDA0", "#FED976", "#FEB24C", "#FD8D3C", 
-               "#FC4E2A", "#E31A1C", "#BD0026", "#800026"),
+    colors = c("#c6dbef", "#9ecae1", "#6baed6", "#4292c6", "#2171b5", "#08519c", "#08306b"),
     labels = comma,
     name = "Avg Price\n(SGD)",
     na.value = "gray90"
@@ -126,17 +125,15 @@ ggsave("Environment_Analysis/figures/map1_price_by_town.png", p1,
 # Map 2: Average Distance to Nearest Park by Town
 cat("2. Creating choropleth: Distance to nearest park by town\n")
 p2 <- ggplot() +
-  geom_sf(data = town_data, aes(fill = Mean_Dist_Park), color = "gray40", linewidth = 0.3) +
+  geom_sf(data = town_data, aes(fill = Mean_Dist_Park), color = "white", linewidth = 0.5) +
   scale_fill_gradientn(
-    colors = c("#006837", "#1a9850", "#66bd63", "#a6d96a", "#d9ef8b", 
-               "#ffffbf", "#fee08b", "#fdae61", "#f46d43", "#d73027"),
+    colors = c("#08306b", "#08519c", "#2171b5", "#4292c6", "#6baed6", "#9ecae1", "#c6dbef"),
     labels = comma,
     name = "Mean Distance\n(meters)",
-    na.value = "gray90",
-    trans = "reverse"
+    na.value = "gray90"
   ) +
   labs(title = "Average Distance to Nearest Park by Planning Area (2024)",
-       subtitle = "4-Room HDB Flats | Darker green = closer to parks | Gray areas have no data") +
+       subtitle = "4-Room HDB Flats | Darker blue = closer to parks | Gray areas have no data") +
   theme_map +
   annotation_scale(location = "br", width_hint = 0.2) +
   theme(legend.key.height = unit(1.5, "cm"),
@@ -148,14 +145,14 @@ ggsave("Environment_Analysis/figures/map2_dist_park_by_town.png", p2,
 # Map 3: Average Park Count within 1km by Town
 cat("3. Creating choropleth: Park count within 1km by town\n")
 p3 <- ggplot() +
-  geom_sf(data = town_data, aes(fill = Mean_Parks_1km), color = "gray40", linewidth = 0.3) +
+  geom_sf(data = town_data, aes(fill = Mean_Parks_1km), color = "white", linewidth = 0.5) +
   scale_fill_gradientn(
-    colors = c("#f7f7f7", "#d9f0d3", "#a6dba0", "#5aae61", "#1b7837", "#00441b"),
+    colors = c("#c6dbef", "#9ecae1", "#6baed6", "#4292c6", "#2171b5", "#08519c", "#08306b"),
     name = "Avg Park\nCount",
     na.value = "gray90"
   ) +
   labs(title = "Average Number of Parks within 1km by Planning Area (2024)",
-       subtitle = "4-Room HDB Flats | Darker green = more parks nearby | Gray areas have no data") +
+       subtitle = "4-Room HDB Flats | Darker blue = more parks nearby | Gray areas have no data") +
   theme_map +
   annotation_scale(location = "br", width_hint = 0.2) +
   theme(legend.key.height = unit(1.5, "cm"),
@@ -191,8 +188,7 @@ p4 <- ggplot() +
   geom_sf(data = parks, fill = "#238b45", color = "#00441b", size = 4, shape = 23, stroke = 0.8) +
   
   scale_color_gradientn(
-    colors = c("#FFFFCC", "#FFEDA0", "#FED976", "#FEB24C", "#FD8D3C", 
-               "#FC4E2A", "#E31A1C", "#BD0026", "#800026"),
+    colors = c("#c6dbef", "#9ecae1", "#6baed6", "#4292c6", "#2171b5", "#08519c", "#08306b"),
     labels = comma,
     name = "Resale\nPrice\n(SGD)",
     breaks = seq(400000, 900000, 100000)
@@ -227,15 +223,14 @@ p5 <- ggplot() +
   geom_sf(data = parks, fill = "#d73027", color = "#67000d", size = 4, shape = 24, stroke = 0.8) +
   
   scale_color_gradientn(
-    colors = c("#006837", "#1a9850", "#66bd63", "#a6d96a", "#d9ef8b", 
-               "#ffffbf", "#fee08b", "#fdae61", "#f46d43", "#d73027", "#a50026"),
+    colors = c("#08306b", "#08519c", "#2171b5", "#4292c6", "#6baed6", "#9ecae1", "#c6dbef"),
     labels = comma,
     name = "Distance to\nNearest\nPark (m)",
     breaks = c(0, 500, 1000, 2000, 3000, 5000)
   ) +
   
   labs(title = "Proximity to Parks for 4-Room HDB Resale Transactions (2024)",
-       subtitle = sprintf("Dark green = close to parks | Red = far from parks | Red triangles show park locations (n=%d)", 
+       subtitle = sprintf("Dark blue = close to parks | Light blue = far from parks | Red triangles show park locations (n=%d)", 
                          nrow(hdb_sample))) +
   theme_map +
   annotation_scale(location = "br", width_hint = 0.2) +
@@ -276,8 +271,7 @@ p6 <- ggplot() +
   
   # Color scale for density
   scale_fill_gradientn(
-    colors = c("#FFFFCC", "#FFEDA0", "#FED976", "#FEB24C", "#FD8D3C", 
-               "#FC4E2A", "#E31A1C", "#BD0026", "#800026"),
+    colors = c("#c6dbef", "#9ecae1", "#6baed6", "#4292c6", "#2171b5", "#08519c", "#08306b"),
     name = "Transaction\nCount per\nHexagon",
     na.value = NA
   ) +
@@ -316,7 +310,7 @@ cor_park_dist <- cor(hdb_df$dist_to_park_m, hdb_df$resale_price, use = "complete
 p7 <- ggplot(hdb_df, aes(x = dist_to_park_m, y = resale_price)) +
   # Hexagonal bins to show density (cleaner than overlapping points)
   geom_hex(bins = 40, alpha = 0.8) +
-  scale_fill_gradientn(colors = c("#EFF3FF", "#BDD7E7", "#6BAED6", "#3182BD", "#08519C"),
+  scale_fill_gradientn(colors = c("#c6dbef", "#9ecae1", "#6baed6", "#4292c6", "#2171b5", "#08519c", "#08306b"),
                        name = "Count", trans = "log10") +
   
   # Add smooth trend line
@@ -412,7 +406,7 @@ hdb_filtered <- hdb_df %>%
 p9 <- ggplot(hdb_filtered, aes(x = connector_length_1km, y = resale_price)) +
   # Hexagonal bins to show density
   geom_hex(bins = 40, alpha = 0.8) +
-  scale_fill_gradientn(colors = c("#F0F9E8", "#BAE4BC", "#7BCCC4", "#43A2CA", "#0868AC"),
+  scale_fill_gradientn(colors = c("#c6dbef", "#9ecae1", "#6baed6", "#4292c6", "#2171b5", "#08519c", "#08306b"),
                        name = "Count", trans = "log10") +
   
   # Add smooth trend line with wider confidence interval

@@ -1,0 +1,2 @@
+"Model","AICc","Pseudo_R2","N_Areas","Note"
+"Global Poisson GLM",3690.38217766285,0.32355859100488,20,"Predicts transaction count based on green space metrics and area size"

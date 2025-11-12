@@ -6,6 +6,7 @@ Analysis of the relationship between green spaces (parks and park connectors) an
 
 Run the R scripts in order:
 
+### Basic Analysis
 ```r
 # 1. Prepare data (filter for 2024 and 4-ROOM, load green spaces)
 source("01_data_preparation.R")
@@ -18,6 +19,24 @@ source("03_statistics_analysis.R")
 
 # 4. Create all visualizations (maps and plots)
 source("04_create_visualizations.R")
+```
+
+### Advanced Spatial Analysis
+```r
+# 5. Buffer analysis for park service areas
+source("05_buffer_analysis.R")
+
+# 6. Hypothesis testing (ANN, Poisson)
+source("06_hypothesis_testing.R")
+
+# 7. Spatial autocorrelation (Moran's I, LISA)
+source("07_spatial_autocorrelation.R")
+
+# 8. Geographically Weighted Regression (price model)
+source("08_gwr_price_model.R")
+
+# 9. Transaction density modeling
+source("09_gwr_density_model.R")
 ```
 
 ## Directory Structure
@@ -60,7 +79,7 @@ Environment_Analysis/
 - **Sample:** 8,271 4-ROOM HDB transactions in 2024
 - **Green spaces:** 25 parks, 69 park connector segments
 
-### Correlations with Resale Price
+### Basic Findings
 
 | Metric | Correlation |
 |--------|-------------|
@@ -69,17 +88,23 @@ Environment_Analysis/
 | Parks within 1km | **+0.07** (weak) |
 | Distance to park | **-0.02** (negligible) |
 
-**Key Insight:** Park connectors show stronger association with prices than parks themselves, suggesting connectivity matters more than proximity.
+### Advanced Spatial Analysis Findings
 
-### Price Premium
+| Analysis | Key Result |
+|----------|------------|
+| **GWR R²** | **0.847** (vs OLS: 0.253) - 235% improvement! |
+| **Moran's I** | **0.866** - Extreme spatial autocorrelation |
+| **LISA Clusters** | 1,427 hot spots, 1,909 cold spots identified |
+| **ANN Test** | High-price areas strongly clustered (ratio=0.037) |
+| **Buffer Analysis** | Only 21% of flats within 1km of parks |
 
-- Flats with **2+ parks within 1km**: ~**$40,000 premium** over flats with no nearby parks
-- Optimal distance to park: **300-1000m** (balances accessibility and avoiding crowds)
+**Groundbreaking Insight:** Green space effects vary from **-$118 to +$131 per meter** depending on location! Simple correlations masked massive spatial heterogeneity.
 
 ## Requirements
 
 ### R Packages
 
+**Basic Analysis:**
 ```r
 install.packages(c(
   "sf",           # Spatial data handling
@@ -92,7 +117,18 @@ install.packages(c(
   "viridis",      # Color palettes
   "scales",       # Axis formatting
   "ggspatial",    # Map annotations
-  "units"         # Unit conversions
+  "units",        # Unit conversions
+  "hexbin"        # Hexagonal binning
+))
+```
+
+**Advanced Spatial Analysis:**
+```r
+install.packages(c(
+  "spatstat",     # Point pattern analysis, ANN
+  "spdep",        # Spatial autocorrelation, Moran's I
+  "GWmodel",      # Geographically Weighted Regression
+  "stringr"       # String manipulation
 ))
 ```
 
@@ -132,4 +168,4 @@ For each transaction, calculate:
 
 See `ANALYSIS_SUMMARY.md` for detailed findings, discussion, and policy implications.
 
-**TL;DR:** Green spaces matter, but park connectors > individual parks, and location still dominates.
+**TL;DR:** Green spaces matter, but effects are **highly location-dependent**. GWR shows R²=0.85 (vs OLS: 0.25). Park connectors > individual parks. Extreme spatial segregation (Moran's I=0.87).

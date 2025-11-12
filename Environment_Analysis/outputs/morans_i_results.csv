@@ -1,0 +1,2 @@
+"Test","Morans_I","Expected_I","Variance","Z_Score","P_Value","Significance","Interpretation"
+"Global Moran's I (Resale Price)",0.866323173735472,-0.000120918984280532,2.64766697610411e-05,168.387118740308,0,"SIGNIFICANT","Positive spatial autocorrelation (similar prices cluster together)"

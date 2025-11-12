@@ -1,0 +1,2 @@
+"Test","Statistic","DF","P_Value","Conclusion"
+"Quadrat Test (Homogeneous Poisson)",55968.5236368033,99,0,"Reject CSR - Transactions show spatial pattern"

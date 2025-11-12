@@ -1,0 +1,3 @@
+"Dataset","N_Points","Observed_Mean_Dist_m","Expected_Mean_Dist_m","ANN_Ratio","Z_Score","P_Value","Pattern"
+"Parks",25,2851.90217093272,4305.87525745288,0.662328098334124,-3.22995008480521,0.00123811831940235,"Clustered"
+"High-Price Transactions (>median)",4032,12.6424233955424,339.055806776385,0.0372871460770479,-116.94668482302,0,"Clustered"
