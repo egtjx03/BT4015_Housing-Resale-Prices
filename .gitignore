@@ -1,0 +1,42 @@
+# Large data files
+*.geojson
+*.rds
+*.csv
+*.zip
+*.json
+
+# Keep only essential files - exclude the large ones
+!Environment_Analysis/outputs/*.csv
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# R files
+.Rhistory
+.RData
+.Rproj.user
+
+# System files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Generated figures (too large)
+Environment_Analysis/figures/*.png
+
+# Keep README and scripts
+!*.R
+!*.py
+!*.md
+!README.md
+

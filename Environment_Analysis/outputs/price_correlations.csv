@@ -1,0 +1,7 @@
+"Metric","Correlation"
+"dist_to_park_m",-0.0225552576183564
+"dist_to_connector_m",-0.260282757547473
+"parks_within_500m",0.032886918282581
+"parks_within_1km",0.0694868420316947
+"connector_length_500m",0.115691412615831
+"connector_length_1km",0.13620747036743
