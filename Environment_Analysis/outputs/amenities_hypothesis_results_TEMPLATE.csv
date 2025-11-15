@@ -1,0 +1,8 @@
+Amenity_Factor,Coefficient,t_Statistic,p_Value,Significance,Decision,Effect_on_Price
+Hawker Center (distance),[Calculate],[Calculate],[Calculate],[***/**/*],"[Reject/Accept H0]","[Negative = closer is better]"
+Polyclinic (distance),[Calculate],[Calculate],[Calculate],[***/**/*],"[Reject/Accept H0]","[Negative = closer is better]"
+Primary School (distance),[Calculate],[Calculate],[Calculate],[***/**/*],"[Reject/Accept H0]","[Negative = closer is better]"
+Supermarket (distance),[Calculate],[Calculate],[Calculate],[***/**/*],"[Reject/Accept H0]","[Negative = closer is better]"
+Sports Facility (distance),[Calculate],[Calculate],[Calculate],[***/**/*],"[Reject/Accept H0]","[Negative = closer is better]"
+Parking (distance),[Calculate],[Calculate],[Calculate],[***/**/*],"[Reject/Accept H0]","[Negative = closer is better]"
+

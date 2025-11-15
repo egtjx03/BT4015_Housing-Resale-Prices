@@ -1,0 +1,7 @@
+"Amenity","Hypothesis_Test","Decision","P_Value","Interpretation"
+"Hawker Center","H0: β = 0 vs H1: β ≠ 0","[To be filled after analysis]","[Calculate from regression]","[Significant/Not Significant]"
+"Polyclinic","H0: β = 0 vs H1: β ≠ 0","[To be filled after analysis]","[Calculate from regression]","[Significant/Not Significant]"
+"Primary School","H0: β = 0 vs H1: β ≠ 0","[To be filled after analysis]","[Calculate from regression]","[Significant/Not Significant]"
+"Supermarket","H0: β = 0 vs H1: β ≠ 0","[To be filled after analysis]","[Calculate from regression]","[Significant/Not Significant]"
+"Sports Facility","H0: β = 0 vs H1: β ≠ 0","[To be filled after analysis]","[Calculate from regression]","[Significant/Not Significant]"
+"Parking","H0: β = 0 vs H1: β ≠ 0","[To be filled after analysis]","[Calculate from regression]","[Significant/Not Significant]"

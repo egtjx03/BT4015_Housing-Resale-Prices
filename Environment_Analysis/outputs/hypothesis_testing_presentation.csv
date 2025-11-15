@@ -1,0 +1,5 @@
+"Amenity_Factor","Coefficient","p_Value","Result"
+"Distance to Park","12.90","<0.001","Reject H0 (Has effect) (Positive)"
+"Distance to Park Connector","-45.67","<0.001","Reject H0 (Has effect) (Negative)"
+"Parks within 1km","13289.17","<0.001","Reject H0 (Has effect) (Positive)"
+"Park Connector Length (1km)","-0.24","0.4298","Accept H0 (No effect) (Negative)"

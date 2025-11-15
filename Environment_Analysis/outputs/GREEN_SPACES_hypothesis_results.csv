@@ -1,0 +1,6 @@
+Amenity_Factor,Coefficient,t_Statistic,p_Value,Significance,Decision,Effect_on_Price
+Distance to Park (m),+12.90,8.69,<0.001,***,Reject H0 - HAS EFFECT,Positive (farther = higher price - counterintuitive!)
+Distance to Park Connector (m),-45.67,-21.63,<0.001,***,Reject H0 - HAS EFFECT,Negative (closer = higher price ✓)
+Parks within 1km,+13289.17,4.99,<0.001,***,Reject H0 - HAS EFFECT,Positive (more parks = higher price ✓)
+Park Connector Length 1km,-0.24,-0.79,0.430,ns,Accept H0 - NO EFFECT,None (not significant)
+

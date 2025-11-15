@@ -1,0 +1,5 @@
+"Amenity_Factor","Coefficient","Std_Error","t_Statistic","p_Value","Significant","Decision","Effect_Direction","Significance_Level"
+"Distance to Park",12.9032791223313,1.48568945412068,8.68504456738452,4.51268381930642e-18,"Yes","Reject H0 (Has effect)","Positive","***"
+"Distance to Park Connector",-45.6661138946916,2.11131592742999,-21.6292186789302,5.79041422727373e-101,"Yes","Reject H0 (Has effect)","Negative","***"
+"Parks within 1km",13289.1744746863,2665.05444616968,4.9864551524589,6.27486075122688e-07,"Yes","Reject H0 (Has effect)","Positive","***"
+"Park Connector Length (1km)",-0.235621631827382,0.298440994391404,-0.789508265470948,0.429837651795704,"No","Accept H0 (No effect)","Negative","ns"
