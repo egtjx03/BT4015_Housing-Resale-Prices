@@ -116,57 +116,67 @@ calc_distance_to_nearest <- function(points, features, feature_name) {
   return(as.numeric(nearest_dist))
 }
 
-# Function to count features within 1km buffer
-calc_count_within_1km <- function(points, features, feature_name) {
-  cat(sprintf("  Counting %s within 1km...\n", feature_name))
-  buffer_1km <- st_buffer(points, dist = 1000)
-  counts <- lengths(st_intersects(buffer_1km, features))
+# Function to count features within specified buffer distance
+calc_count_within_buffer <- function(points, features, buffer_dist, feature_name) {
+  cat(sprintf("  Counting %s within %dm...\n", feature_name, buffer_dist))
+  buffer <- st_buffer(points, dist = buffer_dist)
+  counts <- lengths(st_intersects(buffer, features))
   return(counts)
 }
 
-# Calculate metrics for all datasets
+# Calculate metrics for all datasets with specific buffer distances
+# Buffer distances based on typical walking distances for each amenity type
+
 # AMENITIES
+# Hawker Centers (500m buffer - 5-7 min walk)
 hdb_svy21$dist_hawker_m <- calc_distance_to_nearest(hdb_svy21, hawker_centers, "Hawker Centers")
-hdb_svy21$count_hawker_1km <- calc_count_within_1km(hdb_svy21, hawker_centers, "Hawker Centers")
+hdb_svy21$count_hawker_500m <- calc_count_within_buffer(hdb_svy21, hawker_centers, 500, "Hawker Centers")
 
+# Schools (1000m buffer - important for families)
 hdb_svy21$dist_school_m <- calc_distance_to_nearest(hdb_svy21, schools, "Schools")
-hdb_svy21$count_school_1km <- calc_count_within_1km(hdb_svy21, schools, "Schools")
+hdb_svy21$count_school_1km <- calc_count_within_buffer(hdb_svy21, schools, 1000, "Schools")
 
+# Clinics (800m buffer - 10 min walk)
 hdb_svy21$dist_clinic_m <- calc_distance_to_nearest(hdb_svy21, clinics, "Clinics")
-hdb_svy21$count_clinic_1km <- calc_count_within_1km(hdb_svy21, clinics, "Clinics")
+hdb_svy21$count_clinic_800m <- calc_count_within_buffer(hdb_svy21, clinics, 800, "Clinics")
 
+# Supermarkets (400m buffer - quick errands)
 hdb_svy21$dist_supermarket_m <- calc_distance_to_nearest(hdb_svy21, supermarkets, "Supermarkets")
-hdb_svy21$count_supermarket_1km <- calc_count_within_1km(hdb_svy21, supermarkets, "Supermarkets")
+hdb_svy21$count_supermarket_400m <- calc_count_within_buffer(hdb_svy21, supermarkets, 400, "Supermarkets")
 
+# Sports Facilities (2000m buffer - less frequent use)
 hdb_svy21$dist_sports_m <- calc_distance_to_nearest(hdb_svy21, sports_facilities, "Sports Facilities")
-hdb_svy21$count_sports_1km <- calc_count_within_1km(hdb_svy21, sports_facilities, "Sports Facilities")
+hdb_svy21$count_sports_2km <- calc_count_within_buffer(hdb_svy21, sports_facilities, 2000, "Sports Facilities")
 
+# Parking Lots (200m buffer - immediate vicinity)
 hdb_svy21$dist_parking_m <- calc_distance_to_nearest(hdb_svy21, parking_lots, "Parking Lots")
-hdb_svy21$count_parking_1km <- calc_count_within_1km(hdb_svy21, parking_lots, "Parking Lots")
+hdb_svy21$count_parking_200m <- calc_count_within_buffer(hdb_svy21, parking_lots, 200, "Parking Lots")
 
 # ACCESSIBILITY
+# MRT Stations (800m buffer - 10 min walk)
 hdb_svy21$dist_mrt_m <- calc_distance_to_nearest(hdb_svy21, mrt_stations, "MRT Stations")
-hdb_svy21$count_mrt_1km <- calc_count_within_1km(hdb_svy21, mrt_stations, "MRT Stations")
+hdb_svy21$count_mrt_800m <- calc_count_within_buffer(hdb_svy21, mrt_stations, 800, "MRT Stations")
 
+# Bus Stops (200m buffer - immediate access)
 hdb_svy21$dist_bus_m <- calc_distance_to_nearest(hdb_svy21, bus_stops, "Bus Stops")
-hdb_svy21$count_bus_1km <- calc_count_within_1km(hdb_svy21, bus_stops, "Bus Stops")
+hdb_svy21$count_bus_200m <- calc_count_within_buffer(hdb_svy21, bus_stops, 200, "Bus Stops")
 
 # ENVIRONMENT
+# Parks (1000m buffer - recreational distance)
 hdb_svy21$dist_park_m <- calc_distance_to_nearest(hdb_svy21, parks, "Parks")
-hdb_svy21$count_park_1km <- calc_count_within_1km(hdb_svy21, parks, "Parks")
+hdb_svy21$count_park_1km <- calc_count_within_buffer(hdb_svy21, parks, 1000, "Parks")
 
-# For park connectors (line features), calculate distance differently
+# Park Connectors (200m buffer - line features, use length within buffer)
 cat("  Calculating distance to nearest Park Connector...\n")
 hdb_svy21$dist_connector_m <- as.numeric(st_distance(hdb_svy21, st_union(park_connectors)))
 
-# For connector count, we'll use total length within 1km buffer
-cat("  Calculating Park Connector length within 1km...\n")
-buffer_1km <- st_buffer(hdb_svy21, dist = 1000)
+cat("  Calculating Park Connector length within 200m...\n")
+buffer_200m <- st_buffer(hdb_svy21, dist = 200)
 connector_union <- st_union(park_connectors)
 
 # Calculate connector length for each buffer individually
-hdb_svy21$connector_length_1km <- sapply(1:nrow(buffer_1km), function(i) {
-  intersect_result <- suppressWarnings(st_intersection(connector_union, buffer_1km[i, ]))
+hdb_svy21$connector_length_200m <- sapply(1:nrow(buffer_200m), function(i) {
+  intersect_result <- suppressWarnings(st_intersection(connector_union, buffer_200m[i, ]))
   if (length(intersect_result) == 0 || st_is_empty(intersect_result)) {
     return(0)
   } else {
@@ -192,10 +202,10 @@ model_vars <- c(
   "dist_hawker_m", "dist_school_m", "dist_clinic_m", "dist_supermarket_m",
   "dist_sports_m", "dist_parking_m", "dist_mrt_m", "dist_bus_m",
   "dist_park_m", "dist_connector_m",
-  # Count variables (10)
-  "count_hawker_1km", "count_school_1km", "count_clinic_1km", "count_supermarket_1km",
-  "count_sports_1km", "count_parking_1km", "count_mrt_1km", "count_bus_1km",
-  "count_park_1km", "connector_length_1km",
+  # Count variables with specific buffer distances (10)
+  "count_hawker_500m", "count_school_1km", "count_clinic_800m", "count_supermarket_400m",
+  "count_sports_2km", "count_parking_200m", "count_mrt_800m", "count_bus_200m",
+  "count_park_1km", "connector_length_200m",
   # Control variables
   "floor_area_sqm", "remaining_lease_years"
 )
@@ -349,9 +359,9 @@ hdb_gwr$coef_dist_hawker <- local_coefs$dist_hawker_m
 hdb_gwr$coef_dist_school <- local_coefs$dist_school_m
 hdb_gwr$coef_dist_park <- local_coefs$dist_park_m
 
-# Count coefficients
-hdb_gwr$coef_count_mrt <- local_coefs$count_mrt_1km
-hdb_gwr$coef_count_hawker <- local_coefs$count_hawker_1km
+# Count coefficients (with specific buffer distances)
+hdb_gwr$coef_count_mrt <- local_coefs$count_mrt_800m
+hdb_gwr$coef_count_hawker <- local_coefs$count_hawker_500m
 hdb_gwr$coef_count_school <- local_coefs$count_school_1km
 hdb_gwr$coef_count_park <- local_coefs$count_park_1km
 
@@ -362,7 +372,7 @@ hdb_gwr$coef_lease <- local_coefs$remaining_lease_years
 # Summary statistics for key coefficients
 cat("\n  Summary of local coefficients:\n")
 
-key_coefs <- c("dist_mrt_m", "count_mrt_1km", "dist_hawker_m", "count_hawker_1km",
+key_coefs <- c("dist_mrt_m", "count_mrt_800m", "dist_hawker_m", "count_hawker_500m",
                "dist_park_m", "count_park_1km", "floor_area_sqm", "remaining_lease_years")
 
 for (coef_name in key_coefs) {
@@ -476,7 +486,7 @@ ggsave("HDB/figures/gwr_coef_mrt_distance_map.png", p_mrt_dist,
        width = 12, height = 10, dpi = 300, bg = "white")
 
 # Map 3: Local coefficient for MRT count
-cat("  3. Creating map: Local coefficient for MRT count within 1km\n")
+cat("  3. Creating map: Local coefficient for MRT count within 800m\n")
 
 p_mrt_count <- ggplot() +
   geom_sf(data = planning_areas_wgs84, fill = "white", color = "gray70", linewidth = 0.2) +
@@ -486,8 +496,8 @@ p_mrt_count <- ggplot() +
     midpoint = 0, name = "Coefficient"
   ) +
   labs(
-    title = "GWR: Effect of MRT Station Count (within 1km) on Price",
-    subtitle = "Shows where having more MRT stations nearby matters most"
+    title = "GWR: Effect of MRT Station Count (within 800m) on Price",
+    subtitle = "Shows where having more MRT stations nearby matters most (10-min walk)"
   ) +
   theme_minimal() +
   theme(
@@ -502,7 +512,7 @@ ggsave("HDB/figures/gwr_coef_mrt_count_map.png", p_mrt_count,
        width = 12, height = 10, dpi = 300, bg = "white")
 
 # Map 4: Local coefficient for Hawker Center count
-cat("  4. Creating map: Local coefficient for Hawker Center count\n")
+cat("  4. Creating map: Local coefficient for Hawker Center count within 500m\n")
 
 p_hawker <- ggplot() +
   geom_sf(data = planning_areas_wgs84, fill = "white", color = "gray70", linewidth = 0.2) +
@@ -512,8 +522,8 @@ p_hawker <- ggplot() +
     midpoint = 0, name = "Coefficient"
   ) +
   labs(
-    title = "GWR: Effect of Hawker Center Count (within 1km) on Price",
-    subtitle = "Shows where proximity to hawker centers impacts prices"
+    title = "GWR: Effect of Hawker Center Count (within 500m) on Price",
+    subtitle = "Shows where proximity to hawker centers impacts prices (5-7 min walk)"
   ) +
   theme_minimal() +
   theme(
